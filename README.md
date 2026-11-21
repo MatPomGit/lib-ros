@@ -1,34 +1,19 @@
-# REPLACE_LIB_TITLE
+# lib-ros
 
-**Rodzaj:** `lib-*` · **Etap:** scaffold · **API:** eksperymentalne, niewydane.  
-**Autor podstawowy:** Mateusz Pomianek; opcjonalni współautorzy po potwierdzeniu wkładu.
+Ujednolicone kontrakty do odczytu telemetrii i komunikacji z ROS2 bez implementowania własnego ROS.
 
-Repozytorium definiuje jeden komponent wielokrotnego użytku, z jawnie wersjonowanym kontraktem.
-Warto tworzyć osobną bibliotekę dopiero, gdy istnieje rzeczywiste współużycie albo niezależny cykl życia i wersjonowania.
+**Status:** architektura i struktura źródeł, **NOT_IMPLEMENTED**. To biblioteka planowana, bez zainstalowanego pakietu, urządzeń podłączonych do testów i wydania.
 
-## Publiczny interfejs
+## Moduły
 
-[docs/contracts.md](docs/contracts.md), [contracts/api.json](contracts/api.json).
+| Moduł | Zakres | Status |
+| --- | --- | --- |
+| [discovery](src/lib_ros/discovery/README.md) | Odczyt grafu ROS2: nody, topic, typy i serwisy | PLANNED |
+| [telemetry](src/lib_ros/telemetry/README.md) | Subskrypcje i kontrolowana normalizacja komunikatów | PLANNED |
+| [time](src/lib_ros/time/README.md) | ROS time, wall time, monotonic time, korelacja zegarów | PLANNED |
+| [frames](src/lib_ros/frames/README.md) | Integracja TF2, orientacje i pozycje w układach odniesienia | PLANNED |
+| [health](src/lib_ros/health/README.md) | Diagnostyka węzłów, QoS, kolejki i utrata pakietów | PLANNED |
 
-## Zależności i kompatybilność
+Opakowuje istniejące ROS2/rclpy i typy komunikatów; nie implementuje middleware DDS, algorytmów autonomii, sterownika robota, planera ruchu ani centralnego schedulera. Komendy wykonawcze poza MVP.
 
-[docs/compatibility.md](docs/compatibility.md), [docs/consumers.md](docs/consumers.md).
-
-## Walidacja szkieletu
-
-```bash
-python scripts/validate_repository.py --phase scaffold
-python scripts/validate_documentation.py
-python scripts/validate_pages.py
-python -m unittest discover -s tests -v
-```
-
-Zacznij od [TEMPLATE_SETUP.md](TEMPLATE_SETUP.md). GitHub Packages jest opcjonalnym kanałem zależnym od ekosystemu.
-
-## Audyt i kontrole jakości
-
-Zobacz [audyt szablonu z 2026-11-19](reviews/2026-11-19-template-audit.md) i plan działań P0–P2. Publiczne repozytoria mogą korzystać z GitHub-hosted runners. Szablon zawiera minimalny [workflow Scaffold CI](.github/workflows/ci.yml) z walidacją metadanych i testami regresyjnymi; nie buduje ani nie publikuje pakietów.
-
-## Architektura i bezpieczeństwo
-
-[Architektura](ARCHITECTURE.md), [ADR](docs/adr/README.md), [model zagrożeń](docs/security/threat-model.md), [łańcuch dostaw](docs/security/supply-chain.md), [zarządzanie](GOVERNANCE.md) i [limity dokumentacji](docs/documentation.md). Publiczna dokumentacja API korzysta tylko z `pages/` ([Pages](docs/pages.md)); `docs/` pozostaje wewnętrzne. [Wydania LIB](docs/releases.md) wymagają osobnej autoryzacji.
+Dokumentacja techniczna: [architektura](ARCHITECTURE.md), [kontrakt API](docs/contracts.md), [walidacja](docs/testing.md), [roadmap](docs/roadmap.md), [prywatność](docs/privacy.md). Rejestr publicznego API w [contracts/api.json](contracts/api.json) pozostaje pusty, dopóki nie powstanie kod. Nie opublikowano wydania ani Pages.
