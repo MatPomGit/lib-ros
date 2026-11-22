@@ -1,19 +1,13 @@
-# Architektura biblioteki
+# Architektura lib-ros
 
-**Status:** szablon nie zawiera gotowego produktu. Identyfikatory i komponenty należy zdefiniować przed implementacją.
+Ujednolicone kontrakty do odczytu telemetrii i komunikacji z ROS2 bez implementowania własnego ROS.
 
-- **Source of truth:** to repozytorium jest jedynym właścicielem kodu i publicznego kontraktu.
-- **Upstream:** zależności przypięte do wersji i SHA/digest; aktualność sprawdzana przez Research Autopilot.
-- **Downstream:** `msc-*` i inne narzędzia odwołują się do wydania lub ustalonego SHA, nie kopiują źródeł.
-- **Boundary:** adaptery sprzętowe, rendering i I/O oddzielone od logiki domenowej, gdy dotyczy.
-- **Reproduce:** zdefiniowany lockfile, wersje zależności i parametry.
-- **Audit live:** odczyt aktualnego HEAD i porównanie z przypiętym SHA. Zmiany via PR, bez cichego nadpisywania.
+**Wejście:** jawnie nazwane źródło danych i jego konfiguracja. **Wyjście:** wersjonowany, zwalidowany rekord z metadanymi, czasem, jednostkami i statusem. Warstwy: `src/lib_ros/` → adapter sprzętu/systemu → kontrolowany odbiorca. Katalogi w `src/` zawierają obecnie tylko dokumentację planowanej implementacji.
 
-Pełne kontrakty i macierz środowisk opisano w `docs/` i `config/component.json`.
+Opakowuje istniejące ROS2/rclpy i typy komunikatów; nie implementuje middleware DDS, algorytmów autonomii, sterownika robota, planera ruchu ani centralnego schedulera. Komendy wykonawcze poza MVP.
 
+Wspólny standard pomiarowy: ROS2 time + monotonic clock; geometry_msgs w SI (m, rad), frame_id z TF2. Konwersje jednostek i czasu muszą być jawne; brak niezbędnych metadanych skutkuje błędem zamiast niejawnego przybliżenia.
 
-## Dokumentacja rozwijanej biblioteki
+Szczegóły: [komponenty](docs/architecture/components.md), [przepływy danych](docs/architecture/data-flow.md), [kontrakt](docs/contracts.md), [ADR-0004](docs/adr/0004-boundaries.md).
 
-Po powstaniu kodu opisz **realne** moduły, publiczne API, wersje ABI, granice I/O i adaptery w [components](docs/architecture/components.md), [data-flow](docs/architecture/data-flow.md) i [distribution](docs/architecture/distribution.md). [ADR](docs/adr/README.md) zapisują uzasadnienia decyzji, a [model zagrożeń](docs/security/threat-model.md) rzeczywiste ryzyka i dowody ich kontroli.
-
-Publikacja dokumentacji jako GitHub Pages korzysta **wyłącznie** z `pages/`, nigdy z `docs/` ([polityka](docs/pages.md)). Brak wdrożonej funkcji oznacza stan `NOT_IMPLEMENTED`, a nie domyślny `PASS`.
+**Status:** architektura PROPOSED; implementacja NOT_IMPLEMENTED, E2E NOT_RUN, release NOT_RELEASED.
