@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- 2026-11-28: ROS Monitor jako główny referencyjny konsument, udokumentowany natywny test integracyjny przypiętego SHA; bez zmiany API lub wydania.
+
 - 2026-11-28: udokumentowane dowody exact-SHA wcześniejszego kandydata i pilotaży, przypięty digest obrazu Jazzy, log wersji pakietów ROS.
 
 - 2026-11-28: rotacyjna obsługa kolejek mock, jawna semantyka timeoutów synchronicznych, kompletna dokumentacja API i testy regresyjne.

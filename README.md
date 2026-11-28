@@ -2,7 +2,7 @@
 
 Lekka biblioteka Python do komunikacji aplikacji z ROS 2. Nie wymaga zależności od konkretnego robota, aplikacji ani GUI.
 
-**Status:** implementacja eksperymentalna 0.2.0, bez publicznego wydania. Syntetyczne testy natywne ROS 2 Jazzy i dwa pilotaże offline wykonano dla wcześniejszego SHA 0.2.0; aktualny stan dowodów opisuje [macierz zgodności](docs/compatibility.md). Walidacji sprzętowej nie wykonano.
+**Status:** implementacja eksperymentalna 0.2.0, bez publicznego wydania. [ROS Monitor](https://github.com/MatPomGit/app-ros-monitor) jest głównym referencyjnym konsumentem z potwierdzoną syntetyczną integracją ROS 2 Jazzy. Dokładne SHA i zakres dowodów opisuje [macierz zgodności](docs/compatibility.md). Walidacji sprzętowej nie wykonano.
 
 ## Szybki start
 
