@@ -69,15 +69,26 @@ class MockBackend:
         return [TopicDescriptor(name, (entry[0],))
                 for name, entry in sorted(self._services.items())]
 
+    @staticmethod
+    def _invoke(handler, request, timeout):
+        # Synchronous handlers cannot be interrupted safely. Reject late results.
+        deadline = monotonic() + timeout
+        if timeout <= 0:
+            raise RosTimeout("mock operation timed out before invocation")
+        result = handler(request)
+        if monotonic() >= deadline:
+            raise RosTimeout("mock handler exceeded timeout; side effects may have occurred")
+        return result
+
     def call(self, name, request, service_type, timeout):
         if name not in self._services:
             raise RosTimeout(f"mock service unavailable: {name}")
-        return self._services[name][1](request)
+        return self._invoke(self._services[name][1], request, timeout)
 
     def send_goal(self, name, goal, action_type, timeout):
         if name not in self._actions:
             raise RosTimeout(f"mock action unavailable: {name}")
-        result = self._actions[name](goal)
+        result = self._invoke(self._actions[name], goal, timeout)
         if not isinstance(result, ActionResult):
             raise TypeError("mock action must return ActionResult")
         return result
@@ -96,9 +107,11 @@ class MockBackend:
         deadline = monotonic() + timeout
         with self._condition:
             while not self._closed:
-                for _, callback, queue in self._subscriptions.values():
+                for key, (_, callback, queue) in self._subscriptions.items():
                     if queue:
                         message = queue.popleft()
+                        # Move the serviced subscription to the end of the rotation.
+                        self._subscriptions[key] = self._subscriptions.pop(key)
                         break
                 else:
                     remaining = deadline - monotonic()

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- 2026-11-28: rotacyjna obsługa kolejek mock, jawna semantyka timeoutów synchronicznych, kompletna dokumentacja API i testy regresyjne.
+
 - 2026-11-28: stabilizacja API, testy wersji niezależne od konkretnego numeru, weryfikacja clean-install i plan odbioru dwóch konsumentów.
 
 - 2026-11-28: 0.2.0, jawne opt-in do publikacji, usług i akcji; TF2, zegary ROS/wall/monotonic, diagnostyka lokalna, testy offline i natywne. Bez wydania.
