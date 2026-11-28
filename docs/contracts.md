@@ -1,14 +1,16 @@
-# Docelowy kontrakt danych i API
+# Kontrakt API 0.1.0
 
-**Status: PROPOSED / NOT_IMPLEMENTED.** `contracts/api.json` zachowuje puste `public_entrypoints`, ponieważ biblioteka nie udostępnia jeszcze wykonywalnych symboli.
+Eksperymentalne API Python; publiczne symbole rejestruje contracts/api.json.
 
-| Typ logiczny | Zakres pól | Kontrakt |
-| --- | --- | --- |
-| `ROSContext` | domain_id, namespace, node_name, distribution | PLANNED |
-| `TopicDescriptor` | name, type, qos_profile, direction | PLANNED |
-| `StampedTelemetry` | topic, header_stamp, receive_monotonic_s, frame_id, payload_ref | PLANNED |
-| `ConnectionHealth` | graph_snapshot, heartbeat, drops, errors | PLANNED |
+- RosClient: konstruktor z node_name, namespace, domain_id oraz opcjonalnym backendem.
+- topics(): lista TopicDescriptor(name, types); nodes(): lista par (nazwa, namespace).
+- subscribe(topic, callback, message_type=None, qos=10): uchwyt Subscription z close() i context managerem.
+- read(topic, timeout=5.0, message_type=None, qos=10): następny oryginalny komunikat; brak wiadomości przed terminem powoduje RosTimeout.
+- spin_once(timeout=0.1), spin(), close(): jawny cykl życia; bez wątków w tle.
+- MockBackend: deklaracja tematów i emit(topic, message) dla testów offline.
 
-Wspólne wymagania: jawne źródło danych i identyfikator żądania, model błędów (`INVALID_INPUT`, `UNAVAILABLE`, `TIMEOUT`, `UNSUPPORTED`, `DATA_LOSS`), limit bufora i granica odpowiedzialności za zapis. Jednostki muszą być określone w schemacie: ROS2 time + monotonic clock; geometry_msgs w SI (m, rad), frame_id z TF2.
+Topic musi być absolutny. Typ może być klasą lub nazwą ROS; brak typu wymaga jednoznacznego discovery. QoS to dodatnia głębokość lub sensor_data. Mock ogranicza kolejkę i odrzuca najstarsze dane; nie emuluje pełnych reguł DDS. Nie buforuje wiadomości sprzed subskrypcji.
 
-Nie zakładać prawidłowego timestampu przy odbiorze. Zwracany status ma rozróżniać brak źródła, pusty wynik, niską jakość oraz brak danych. Wersjonowanie i publiczne symbole zostaną zatwierdzone przy pierwszej implementacji. Zmiana niekompatybilna po pojawieniu się odbiorców wymaga kontroli SemVer i migracji.
+RosError oznacza błąd klienta, RosUnavailable brak runtime/typu/tematu, RosTimeout przekroczenie czasu. Nieprawidłowe argumenty powodują ValueError lub TypeError. Natywne wyjątki rclpy i wyjątki callbacków mogą być propagowane.
+
+API nie gwarantuje obecnie serializacji, synchronizacji zegarów ani transformacji. Oryginalny header i jednostki pozostają niezmienione. Komendy wykonawcze są poza 0.1.0.

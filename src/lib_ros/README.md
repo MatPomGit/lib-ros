@@ -1,7 +1,3 @@
-# lib_ros: pakiet planowany
+# lib_ros
 
-Ujednolicone kontrakty do odczytu telemetrii i komunikacji z ROS2 bez implementowania własnego ROS.
-
-Moduły: [discovery](discovery/README.md), [telemetry](telemetry/README.md), [time](time/README.md), [frames](frames/README.md), [health](health/README.md).
-
-Publiczny kontrakt jest obecnie planem: [docs/contracts.md](../../docs/contracts.md). Brak implementacji, testów backendu i release.
+Implementacja klienta w client.py, modele w models.py, backendy w _native.py i _mock.py. Katalogi discovery i telemetry dokumentują funkcje klienta; time, frames i health są planowane.

@@ -1,3 +1,3 @@
-# Planowana struktura źródeł
+# Kod źródłowy
 
-Planowany pakiet `lib_ros` ma katalog w [lib_ros/](lib_ros/README.md). Katalogi zawierają wyłącznie dokumentację; **nie istnieje jeszcze instalowalna biblioteka**.
+Pakiet Python w lib_ros. Publiczne API: RosClient, Subscription, TopicDescriptor, wyjątki i MockBackend. Natywny backend wymaga środowiska ROS 2.

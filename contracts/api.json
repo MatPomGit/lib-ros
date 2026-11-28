@@ -3,9 +3,20 @@
   "name": "lib_ros",
   "api_version": "0.1.0",
   "stability": "experimental",
-  "public_entrypoints": [],
+  "public_entrypoints": [
+    "lib_ros.RosClient",
+    "lib_ros.Subscription",
+    "lib_ros.TopicDescriptor",
+    "lib_ros.MockBackend",
+    "lib_ros.RosError",
+    "lib_ros.RosUnavailable",
+    "lib_ros.RosTimeout"
+  ],
   "serialization_contracts": [],
   "breaking_change_policy": "major_version_with_migration_guide",
   "deprecation_policy": "documented_before_removal",
-  "runtime_requirements": []
+  "runtime_requirements": [
+    "Python >=3.11",
+    "Native backend: compatible ROS 2 rclpy and rosidl_runtime_py"
+  ]
 }

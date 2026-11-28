@@ -1,11 +1,9 @@
-# Roadmap lib-ros
+# Plan rozwoju lib-ros
 
-| Etap | Zakres | Kryterium | Status |
+| Etap | Zakres | Kryterium odbioru | Status |
 | --- | --- | --- | --- |
-| D0 | Struktura i dokumentacja | Katalogi, kontrakty, granice, CI | IN_PROGRESS |
-| D1 | Minimalny model danych | Walidacja typów, jednostek i błędów | NOT_STARTED |
-| D2 | Jeden adapter / źródło | Mock, integracja, timeout, clean-install | NOT_STARTED |
-| D3 | Strumienie i synchronizacja | Backpressure, ordering, timestamp, utrata danych | NOT_STARTED |
-| D4 | E2E i konsument | Rzeczywiste źródło, SHA i protokół testowy | NOT_STARTED |
+| 1 (0.1.0) | Pakiet, RosClient, mock, rclpy, discovery, odczyt, subskrypcje, QoS | Instalacja, testy offline, walidacja natywna | IMPLEMENTED / VALIDATION_PENDING |
+| 2 (0.2.0) | Publikacja, usługi, akcje, TF2, zegary, health | Testy integracyjne, jawne uprawnienia do operacji wykonawczych | PLANNED |
+| 3 (1.0.0) | Dwie niezależne aplikacje, E2E, stabilne API, wydanie | Potwierdzona zgodność, licencja, niezależna recenzja i zgoda | PLANNED |
 
-Nie uruchamiać implementacji w ciemno na stałym runnerze. Merge PR, release i publikacja Pages są oddzielnymi procesami; brak automatycznego wdrożenia.
+Wydanie i publikacja nie są automatyczne. Backend zdalny tylko przy potwierdzonym zapotrzebowaniu. Bez sterowników, GUI i duplikowania ROS.

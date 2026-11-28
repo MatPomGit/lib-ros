@@ -1,7 +1,5 @@
 # Zależności
 
-Celem jest reuse istniejących, licencjonowanych narzędzi ekosystemu zamiast własnej implementacji niskiego poziomu.
+Pakiet Python nie deklaruje zależności runtime z PyPI. Backend mock korzysta z biblioteki standardowej.
 
-Kandydaci: oficjalne pakiety ROS2/rclpy, rcl_interfaces, sensor_msgs, tf2_ros. Wybór dystrybucji ROS2 musi odpowiadać hostowi i testowanej aplikacji.
-
-To **kandydaci**, nie zależności zainstalowane. Brak lockfile i importowalnego pakietu. Przed wdrożeniem zweryfikować kompatybilność, licencję, wersję, zależności przechodnie, SHA i test z rzeczywistą instalacją.
+Backend natywny ładuje rclpy i rosidl_runtime_py z aktywnego środowiska ROS 2. Typy komunikatów muszą być dostępne w tym środowisku. Build korzysta z setuptools (PEP 517). Wersje i licencje zależności środowiska ROS oraz ich zgodność ABI pozostają do weryfikacji przed wydaniem. Brak lockfile środowiska ROS; macierz będzie przypięta po teście integracyjnym.

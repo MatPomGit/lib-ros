@@ -1,19 +1,38 @@
 # lib-ros
 
-Ujednolicone kontrakty do odczytu telemetrii i komunikacji z ROS2 bez implementowania własnego ROS.
+Lekka biblioteka Python do komunikacji aplikacji z ROS 2. Nie wymaga zależności od konkretnego robota, aplikacji ani GUI.
 
-**Status:** architektura i struktura źródeł, **NOT_IMPLEMENTED**. To biblioteka planowana, bez zainstalowanego pakietu, urządzeń podłączonych do testów i wydania.
+**Status:** implementacja eksperymentalna 0.1.0, bez publicznego wydania i bez potwierdzonej walidacji natywnej ROS 2.
 
-## Moduły
+## Szybki start
 
-| Moduł | Zakres | Status |
-| --- | --- | --- |
-| [discovery](src/lib_ros/discovery/README.md) | Odczyt grafu ROS2: nody, topic, typy i serwisy | PLANNED |
-| [telemetry](src/lib_ros/telemetry/README.md) | Subskrypcje i kontrolowana normalizacja komunikatów | PLANNED |
-| [time](src/lib_ros/time/README.md) | ROS time, wall time, monotonic time, korelacja zegarów | PLANNED |
-| [frames](src/lib_ros/frames/README.md) | Integracja TF2, orientacje i pozycje w układach odniesienia | PLANNED |
-| [health](src/lib_ros/health/README.md) | Diagnostyka węzłów, QoS, kolejki i utrata pakietów | PLANNED |
+W środowisku deweloperskim:
 
-Opakowuje istniejące ROS2/rclpy i typy komunikatów; nie implementuje middleware DDS, algorytmów autonomii, sterownika robota, planera ruchu ani centralnego schedulera. Komendy wykonawcze poza MVP.
+```bash
+python -m pip install .
+```
 
-Dokumentacja techniczna: [architektura](ARCHITECTURE.md), [kontrakt API](docs/contracts.md), [walidacja](docs/testing.md), [roadmap](docs/roadmap.md), [prywatność](docs/privacy.md). Rejestr publicznego API w [contracts/api.json](contracts/api.json) pozostaje pusty, dopóki nie powstanie kod. Nie opublikowano wydania ani Pages.
+```python
+from lib_ros import MockBackend, RosClient
+
+backend = MockBackend({"/demo": "std_msgs/msg/String"})
+with RosClient(backend=backend) as ros:
+    with ros.subscribe("/demo", print):
+        backend.emit("/demo", "hello")
+        ros.spin_once(0)
+```
+
+Natywny backend wymaga aktywnego środowiska ROS 2 i zgodnego interpretera Python.
+
+```python
+from lib_ros import RosClient
+
+with RosClient() as ros:
+    print(ros.topics())
+    msg = ros.read("/scan", message_type="sensor_msgs/msg/LaserScan",
+                   qos="sensor_data", timeout=5)
+```
+
+Domyślnie klient jest tylko do odczytu. Callbacki wykonywane są podczas jawnego `spin_once` lub `spin`. Bez podania typu wymagany jest jednoznacznie wykryty topic; odkrywanie grafu DDS jest asynchroniczne.
+
+Dokumentacja: [instalacja](docs/installation.md), [API](docs/contracts.md), [architektura](ARCHITECTURE.md), [plan](docs/roadmap.md), [testy](docs/testing.md). Licencja i wydanie pozostają niezatwierdzone.

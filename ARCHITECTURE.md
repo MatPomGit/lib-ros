@@ -1,13 +1,9 @@
 # Architektura lib-ros
 
-Ujednolicone kontrakty do odczytu telemetrii i komunikacji z ROS2 bez implementowania własnego ROS.
+Jednolity klient ROS 2 dla niezależnych aplikacji. Implementacja 0.1.0 obejmuje `RosClient`, discovery, odczyt, subskrypcje, timeout, QoS oraz backend natywny i mock.
 
-**Wejście:** jawnie nazwane źródło danych i jego konfiguracja. **Wyjście:** wersjonowany, zwalidowany rekord z metadanymi, czasem, jednostkami i statusem. Warstwy: `src/lib_ros/` → adapter sprzętu/systemu → kontrolowany odbiorca. Katalogi w `src/` zawierają obecnie tylko dokumentację planowanej implementacji.
+Klient posiada własny kontekst rclpy, węzeł i executor; nie modyfikuje kontekstu globalnego. Nie uruchamia wątku w tle. Aplikacja wywołuje spin jawnie, a context manager zwalnia zasoby. Klient jest przeznaczony do obsługi z jednego wątku; mock pozwala wstrzykiwać dane z innego wątku.
 
-Opakowuje istniejące ROS2/rclpy i typy komunikatów; nie implementuje middleware DDS, algorytmów autonomii, sterownika robota, planera ruchu ani centralnego schedulera. Komendy wykonawcze poza MVP.
+Natywny backend zachowuje oryginalne komunikaty, a mock działa bez ROS. Nie deklaruje pełnej emulacji DDS, QoS ani typowania. Brak automatycznej normalizacji i zapisu. Czas, TF2, diagnostyka oraz komunikacja dwukierunkowa są kolejnym etapem. Sterowniki, middleware, planowanie ruchu i GUI pozostają poza biblioteką.
 
-Wspólny standard pomiarowy: ROS2 time + monotonic clock; geometry_msgs w SI (m, rad), frame_id z TF2. Konwersje jednostek i czasu muszą być jawne; brak niezbędnych metadanych skutkuje błędem zamiast niejawnego przybliżenia.
-
-Szczegóły: [komponenty](docs/architecture/components.md), [przepływy danych](docs/architecture/data-flow.md), [kontrakt](docs/contracts.md), [ADR-0004](docs/adr/0004-boundaries.md).
-
-**Status:** architektura PROPOSED; implementacja NOT_IMPLEMENTED, E2E NOT_RUN, release NOT_RELEASED.
+[Kontrakt](docs/contracts.md) | [Plan](docs/roadmap.md) | [Kompatybilność](docs/compatibility.md)

@@ -2,10 +2,9 @@
 
 | Środowisko | Cel | Status |
 | --- | --- | --- |
-| Python | 3.11+ (proponowany) | NOT_RUN |
-| Windows | klient / testy jednostkowe | NOT_RUN |
-| Linux | klient / testy jednostkowe | NOT_RUN |
-| ROS2 + rclpy | rzeczywista instalacja | NOT_RUN |
-| Integracja sprzętowa | wskazany host i urządzenie | NOT_RUN |
+| Python 3.11+ | Pakiet i mock | VALIDATION_PENDING |
+| Linux / ROS 2 Jazzy / Python 3.12 | Backend referencyjny | NOT_RUN |
+| Windows | Mock, bez deklaracji ROS | NOT_RUN |
+| Aplikacje i urządzenia | E2E | NOT_RUN |
 
-Nie wolno domniemywać kompatybilności z konkretnym SDK, kodem urządzenia ani profilem sprzętowym na podstawie zielonego CI szkieletu.
+Natywny backend wymaga interpretera ABI zgodnego z instalacją ROS. Nie deklarujemy zweryfikowanej kompatybilności sprzętowej ani międzyaplikacyjnej.
