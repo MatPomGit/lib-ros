@@ -1,5 +1,3 @@
 # Dystrybucja
 
-Proponowany pakiet Python: `lib-ros`, źródła `src/lib_ros/`. Obecnie brak `pyproject.toml`, importowalnych modułów i opublikowanego wydania. Foldery są dokumentacją, nie zbudowanym pakietem.
-
-Przed wydaniem konieczne: wybór licencji, walidacja źródeł SDK, deterministyczny build, clean-install, smoke test, zewnętrzny audit bezpieczeństwa, test docelowego środowiska i decyzja właściciela. `pages/` pozostaje oddzielne i nie jest publikowane przez samo scalenie PR.
+Pakiet Python w układzie src, PEP 517, wheel budowany przez setuptools. Instalacja deweloperska z przypiętego SHA; brak opublikowanego wydania. CI buduje wheel i sprawdza jego instalację. Backend natywny korzysta z pakietów aktywnej dystrybucji ROS 2. Licencja i wydanie wymagają odrębnej decyzji.

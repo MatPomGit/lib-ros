@@ -1,6 +1,6 @@
 # Bezpieczeństwo łańcucha dostaw
 
-**Stan: NOT_CONFIGURED.** Nie istnieje gotowy pakiet ani realny rejestr zależności.
+**Stan: DEVELOPMENT.** Pakiet Python ma manifest i nie deklaruje zależności PyPI runtime. Natywny backend wymaga pakietów ROS. CI pobiera oficjalny obraz ROS 2 Jazzy i zapisuje digest; test działa bez sieci i bez sekretów. Przypięcie zatwierdzonego digestu i audyt licencji są wymagane przed wydaniem.
 
 Po wyborze ekosystemu dokumentuj wszystkie zależności bezpośrednie i przechodnie, ich źródła, licencje, wersje, artefakty i uzasadnione wyjątki. Użyj lockfile i weryfikacji integralności adekwatnej do npm, Maven, NuGet, Pythona, Unity UPM lub OCI. Jeżeli transitive lock jest niemożliwy, opisz ograniczenie.
 

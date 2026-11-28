@@ -1,7 +1,7 @@
 """Offline functional tests of the public client."""
 import unittest
 from threading import Thread
-from time import monotonic, sleep
+from time import monotonic
 from lib_ros import MockBackend, RosClient, RosError, RosTimeout, RosUnavailable
 
 
@@ -83,6 +83,35 @@ class ClientTests(unittest.TestCase):
             self.ros.topics()
         with self.assertRaises(RosError):
             self.backend.emit("/imu", 1)
+
+    def test_close_from_callback(self):
+        def stop(_):
+            self.ros.close()
+        self.ros.subscribe("/imu", stop)
+        self.backend.emit("/imu", 1)
+        self.ros.spin()
+        self.assertFalse(self.backend._subscriptions)
+        with self.assertRaises(RosError):
+            self.ros.topics()
+
+    def test_nested_spin_and_read_rejected(self):
+        def callback(_):
+            with self.assertRaises(RosError):
+                self.ros.spin_once(0)
+            with self.assertRaises(RosError):
+                self.ros.read("/imu")
+        with self.ros.subscribe("/imu", callback):
+            self.backend.emit("/imu", 1)
+            self.ros.spin_once(0)
+
+    def test_sensor_data_queue(self):
+        messages = []
+        with self.ros.subscribe("/imu", messages.append, qos="sensor_data"):
+            for value in range(7):
+                self.backend.emit("/imu", value)
+            for _ in range(5):
+                self.ros.spin_once(0)
+        self.assertEqual(messages, [2, 3, 4, 5, 6])
 
 
 if __name__ == "__main__":

@@ -33,6 +33,6 @@ with RosClient() as ros:
                    qos="sensor_data", timeout=5)
 ```
 
-Domyślnie klient jest tylko do odczytu. Callbacki wykonywane są podczas jawnego `spin_once` lub `spin`. Bez podania typu wymagany jest jednoznacznie wykryty topic; odkrywanie grafu DDS jest asynchroniczne.
+Domyślnie klient jest tylko do odczytu. Callbacki wykonywane są podczas jawnego `spin_once` lub `spin`. Klient jest obsługiwany z jednego wątku; zamknięcie w callbacku jest odroczone do końca spin. Bez podania typu wymagany jest jednoznacznie wykryty topic; odkrywanie grafu DDS jest asynchroniczne.
 
 Dokumentacja: [instalacja](docs/installation.md), [API](docs/contracts.md), [architektura](ARCHITECTURE.md), [plan](docs/roadmap.md), [testy](docs/testing.md). Licencja i wydanie pozostają niezatwierdzone.

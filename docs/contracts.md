@@ -6,7 +6,7 @@ Eksperymentalne API Python; publiczne symbole rejestruje contracts/api.json.
 - topics(): lista TopicDescriptor(name, types); nodes(): lista par (nazwa, namespace).
 - subscribe(topic, callback, message_type=None, qos=10): uchwyt Subscription z close() i context managerem.
 - read(topic, timeout=5.0, message_type=None, qos=10): następny oryginalny komunikat; brak wiadomości przed terminem powoduje RosTimeout.
-- spin_once(timeout=0.1), spin(), close(): jawny cykl życia; bez wątków w tle.
+- spin_once(timeout=0.1), spin(), close(): jawny cykl życia; bez wątków w tle. close() w callbacku odracza zwolnienie zasobów do końca spin_once; zagnieżdżone spin/read zgłaszają RosError.
 - MockBackend: deklaracja tematów i emit(topic, message) dla testów offline.
 
 Topic musi być absolutny. Typ może być klasą lub nazwą ROS; brak typu wymaga jednoznacznego discovery. QoS to dodatnia głębokość lub sensor_data. Mock ogranicza kolejkę i odrzuca najstarsze dane; nie emuluje pełnych reguł DDS. Nie buforuje wiadomości sprzed subskrypcji.

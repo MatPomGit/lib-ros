@@ -48,6 +48,7 @@ class RosClient:
             backend = NativeBackend(node_name, namespace, domain_id)
         self._backend = backend
         self._closed = False
+        self._spinning = False
         self._subscriptions = set()
 
     def __enter__(self):
@@ -87,7 +88,16 @@ class RosClient:
 
     def spin_once(self, timeout=0.1):
         self._ensure_open()
-        self._backend.spin_once(_timeout(timeout))
+        if self._spinning:
+            raise RosError("nested spin or read from a callback is not supported")
+        timeout = _timeout(timeout)
+        self._spinning = True
+        try:
+            self._backend.spin_once(timeout)
+        finally:
+            self._spinning = False
+            if self._closed:
+                self._dispose()
 
     def spin(self):
         """Run callbacks until closed or interrupted."""
@@ -96,6 +106,9 @@ class RosClient:
 
     def read(self, topic, *, timeout=5.0, message_type=None, qos=10):
         """Return the next original message; never return stale cached data."""
+        self._ensure_open()
+        if self._spinning:
+            raise RosError("nested spin or read from a callback is not supported")
         timeout = _timeout(timeout)
         deadline = monotonic() + timeout
         result = []
@@ -111,6 +124,10 @@ class RosClient:
         if self._closed:
             return
         self._closed = True
+        if not self._spinning:
+            self._dispose()
+
+    def _dispose(self):
         try:
             for handle in tuple(self._subscriptions):
                 handle.close()
