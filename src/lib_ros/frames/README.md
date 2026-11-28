@@ -1,9 +1,3 @@
-# frames
+# Frames
 
-Integracja TF2, orientacje i pozycje w układach odniesienia.
-
-Nie mieszać map/odom/base_link; walidować quaterniony.
-
-Każdy rekord powinien przenosić jawny identyfikator źródła, czas i status, gdy dotyczą danej operacji. Nie zakładać dostępności sprzętu ani usług na podstawie dokumentacji. Interfejs ma deklarować błędy, timeout i zasady retencji danych.
-
-**Status: PLANNED / NOT_IMPLEMENTED.** [Kontrakt](../../../docs/contracts.md) · [Testy](../../../docs/testing.md).
+RosClient.transform(target, source, stamp_ns=None, timeout=5) zwraca oryginalny TransformStamped z TF2. None oznacza ostatnią dostępną transformację. Brak samodzielnej implementacji geometrii.

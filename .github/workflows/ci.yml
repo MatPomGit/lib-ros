@@ -80,8 +80,9 @@ jobs:
           docker pull ros:jazzy-ros-base
           image="$(docker image inspect --format '{{.Id}}' ros:jazzy-ros-base)"
           docker image inspect --format '{{json .RepoDigests}}' "$image"
+          printf 'FROM %s\nRUN apt-get update && apt-get install -y --no-install-recommends ros-jazzy-example-interfaces ros-jazzy-tf2-ros-py && rm -rf /var/lib/apt/lists/*\n' ros:jazzy-ros-base | docker build -t lib-ros-ci -
           docker run --rm --network none \
             -v "$PWD:/workspace:ro" \
             -e PYTHONPATH=/workspace/src \
             -e ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST \
-            "$image" bash -c 'source /opt/ros/jazzy/setup.bash && python3 /workspace/tests/native_ros_smoke.py'
+            lib-ros-ci bash -c 'source /opt/ros/jazzy/setup.bash && python3 /workspace/tests/native_ros_smoke.py && python3 /workspace/tests/native_ros_extended.py'

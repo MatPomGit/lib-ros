@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "lib_ros",
-  "api_version": "0.1.0",
+  "api_version": "0.2.0",
   "stability": "experimental",
   "public_entrypoints": [
     "lib_ros.RosClient",
@@ -10,13 +10,18 @@
     "lib_ros.MockBackend",
     "lib_ros.RosError",
     "lib_ros.RosUnavailable",
-    "lib_ros.RosTimeout"
+    "lib_ros.RosTimeout",
+    "lib_ros.RosWriteDisabled",
+    "lib_ros.ClockSnapshot",
+    "lib_ros.ActionResult",
+    "lib_ros.ConnectionHealth"
   ],
   "serialization_contracts": [],
   "breaking_change_policy": "major_version_with_migration_guide",
   "deprecation_policy": "documented_before_removal",
   "runtime_requirements": [
     "Python >=3.11",
-    "Native backend: compatible ROS 2 rclpy and rosidl_runtime_py"
+    "Native backend: compatible ROS 2 rclpy and rosidl_runtime_py",
+    "Optional native transforms: tf2_ros"
   ]
 }

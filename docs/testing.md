@@ -13,3 +13,5 @@ python examples/mock_read.py
 ```
 
 Dalsze testy TF2, czasu, operacji dwukierunkowych i rzeczywistych konsumentów należą do kolejnych etapów. Test kontenerowy nie stanowi walidacji sprzętowej.
+
+Etap 2 dodaje testy mock publikacji, usług, akcji, TF2, zegarów, liczników i blokady operacji wychodzących. Natywny test rozszerzony używa wyłącznie String, AddTwoInts, Fibonacci i statycznej transformacji; bez aktuatorów. Obraz CI doinstalowuje pakiety example_interfaces i tf2_ros_py przed uruchomieniem offline. Brak testu synchronizacji fizycznych zegarów, anulowania akcji i walidacji sprzętowej.

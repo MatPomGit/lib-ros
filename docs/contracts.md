@@ -1,4 +1,4 @@
-# Kontrakt API 0.1.0
+# Kontrakt API 0.2.0
 
 Eksperymentalne API Python; publiczne symbole rejestruje contracts/api.json.
 

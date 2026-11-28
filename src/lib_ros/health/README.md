@@ -1,9 +1,3 @@
-# health
+# Health
 
-Diagnostyka węzłów, QoS, kolejki i utrata pakietów.
-
-Raport obserwowalności bez ukrytych działań naprawczych.
-
-Każdy rekord powinien przenosić jawny identyfikator źródła, czas i status, gdy dotyczą danej operacji. Nie zakładać dostępności sprzętu ani usług na podstawie dokumentacji. Interfejs ma deklarować błędy, timeout i zasady retencji danych.
-
-**Status: PLANNED / NOT_IMPLEMENTED.** [Kontrakt](../../../docs/contracts.md) · [Testy](../../../docs/testing.md).
+RosClient.health() raportuje lokalny stan i liczniki. Nie potwierdza dostępności urządzenia ani utraty DDS; local_drops jest None dla native i licznikiem kolejki w mock.

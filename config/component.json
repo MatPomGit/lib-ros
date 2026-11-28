@@ -4,7 +4,7 @@
   "type": "lib",
   "component_id": "lib-ros",
   "display_name": "ROS2 Integration and Telemetry Adapter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "release_status": "development",
   "owner": "MatPomGit",
   "license_spdx": "UNDECIDED",
@@ -18,7 +18,8 @@
   "dependencies": [],
   "peer_dependencies": [
     "rclpy (native backend)",
-    "rosidl_runtime_py (native backend)"
+    "rosidl_runtime_py (native backend)",
+    "tf2_ros (optional native transforms)"
   ],
   "consumers": [],
   "supported_platforms": [],

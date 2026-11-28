@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lib-ros"
-version = "0.1.0"
+version = "0.2.0"
 description = "Small, application-independent ROS 2 client"
 requires-python = ">=3.11"
 authors = [{name = "Mateusz Pomianek"}]
