@@ -1,8 +1,9 @@
-# Potencjalni odbiorcy
+# Odbiorcy i integracja
 
-- ARC-Robo (eksperymenty robotyczne): **PROPOSED**, bez potwierdzonego wdrożenia.
-- ARC-RVI i ARC-HRI (telemetria i percepcja): **PROPOSED**, bez potwierdzonego wdrożenia.
-- lib-exp (znaczniki zdarzeń eksperymentalnych): **PROPOSED**, bez potwierdzonego wdrożenia.
-- Research Autopilot (diagnostyka wykonawcy ROS2): **PROPOSED**, bez potwierdzonego wdrożenia.
+| Repozytorium | Kontrakt | Stan |
+| --- | --- | --- |
+| [robo-vision](https://github.com/MatPomGit/robo-vision) | Odczyt grafu i diagnostyka telemetrii String | INTEGRATION_PENDING |
+| [alf-vis](https://github.com/MatPomGit/alf-vis) | Odczyt transformacji TF2 dla SLAM | INTEGRATION_PENDING |
+| Klienci Android i web | ROS bridge / WebSocket | OUT_OF_SCOPE dla pakietu Python |
 
-Obecnie nie istnieje potwierdzony konsument z przypiętą wersją biblioteki. Przy pierwszym użyciu zapisać repozytorium, wersję/SHA, typ kontraktu i dowód testu integracyjnego.
+Integracje pilotażowe nie zastępują istniejącego sterowania, wątków, executorów ani cyklu życia aplikacji. Każdy konsument musi przypiąć SHA biblioteki i wykonać własny test; testy mock nie stanowią dowodu pracy na urządzeniu. Wydanie 1.0.0 wymaga potwierdzonych testów i decyzji licencyjnej.

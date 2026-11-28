@@ -67,7 +67,9 @@ class ContractTests(unittest.TestCase):
 
     def test_state_mismatch_fails_closed(self):
         p = self.repo / "PROJECT_STATE.yaml"
-        p.write_text(p.read_text().replace("source_version: 0.1.0", "source_version: 9.9.9"))
+        lines = p.read_text().splitlines()
+        self.assertEqual(1, sum(line.startswith("source_version:") for line in lines))
+        p.write_text("\n".join("source_version: 9.9.9" if line.startswith("source_version:") else line for line in lines) + "\n")
         self.assertIn("STATE: source_version mismatch", check(self.repo))
 
     def test_path_escape_is_not_accepted(self):

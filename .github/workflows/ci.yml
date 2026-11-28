@@ -48,12 +48,17 @@ jobs:
       - name: Build and install wheel
         run: |
           python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/lib-ros-wheel" .
+          python -m venv "$RUNNER_TEMP/lib-ros-clean"
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" -m pip install --no-deps "$RUNNER_TEMP"/lib-ros-wheel/*.whl
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" -m pip check
+          sha256sum "$RUNNER_TEMP"/lib-ros-wheel/*.whl
           python -m pip install --no-deps "$RUNNER_TEMP"/lib-ros-wheel/*.whl
-          python -m pip check
       - name: Run regression tests
         run: python -m unittest discover -s tests -v
       - name: Smoke test installed client
-        run: python examples/mock_read.py
+        run: |
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" examples/mock_read.py
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" examples/mock_extended.py
       - name: Build and inspect approved Pages (never deploy)
         run: |
           python -m pip install --disable-pip-version-check "mkdocs==1.6.1"

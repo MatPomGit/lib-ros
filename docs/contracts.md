@@ -14,3 +14,7 @@ Topic musi być absolutny. Typ może być klasą lub nazwą ROS; brak typu wymag
 RosError oznacza błąd klienta, RosUnavailable brak runtime/typu/tematu, RosTimeout przekroczenie czasu. Nieprawidłowe argumenty powodują ValueError lub TypeError. Natywne wyjątki rclpy i wyjątki callbacków mogą być propagowane.
 
 API nie gwarantuje obecnie serializacji, synchronizacji zegarów ani transformacji. Oryginalny header i jednostki pozostają niezmienione. Komendy wykonawcze są poza 0.1.0.
+
+## Stabilizacja
+
+Test public_api sprawdza dokładny zestaw eksportów, wersję zainstalowanego wheel oraz metody klienta. Do 1.0.0 wersja pozostaje eksperymentalna. Aplikacje integrują się przez publiczne API, nie importują modułów _native i _mock. Timeout usługi lub akcji nie potwierdza anulowania; operacje krytyczne wymagają odrębnych mechanizmów bezpieczeństwa.
