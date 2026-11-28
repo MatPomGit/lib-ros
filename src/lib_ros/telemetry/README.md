@@ -1,9 +1,3 @@
-# telemetry
+# Telemetry
 
-Subskrypcje i kontrolowana normalizacja komunikatów.
-
-Jawne typy, jednostki, frame_id i identyfikacja źródła.
-
-Każdy rekord powinien przenosić jawny identyfikator źródła, czas i status, gdy dotyczą danej operacji. Nie zakładać dostępności sprzętu ani usług na podstawie dokumentacji. Interfejs ma deklarować błędy, timeout i zasady retencji danych.
-
-**Status: PLANNED / NOT_IMPLEMENTED.** [Kontrakt](../../../docs/contracts.md) · [Testy](../../../docs/testing.md).
+RosClient.read() i subscribe() zwracają oryginalne komunikaty bez konwersji. Callbacki wymagają jawnego spin. QoS i timeout są konfigurowalne. Normalizacja i synchronizacja pozostają poza pierwszym etapem.

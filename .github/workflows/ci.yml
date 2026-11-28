@@ -1,4 +1,4 @@
-name: Scaffold CI
+name: Library CI
 
 on:
   pull_request:
@@ -45,10 +45,50 @@ jobs:
         run: python scripts/validate_documentation.py
       - name: Check isolated public Pages
         run: python scripts/validate_pages.py
+      - name: Build and install wheel
+        run: |
+          python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/lib-ros-wheel" .
+          python -m venv "$RUNNER_TEMP/lib-ros-clean"
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" -m pip install --no-deps "$RUNNER_TEMP"/lib-ros-wheel/*.whl
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" -m pip check
+          sha256sum "$RUNNER_TEMP"/lib-ros-wheel/*.whl
+          python -m pip install --no-deps "$RUNNER_TEMP"/lib-ros-wheel/*.whl
       - name: Run regression tests
         run: python -m unittest discover -s tests -v
+      - name: Smoke test installed client
+        run: |
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" examples/mock_read.py
+          "$RUNNER_TEMP/lib-ros-clean/bin/python" examples/mock_extended.py
       - name: Build and inspect approved Pages (never deploy)
         run: |
           python -m pip install --disable-pip-version-check "mkdocs==1.6.1"
           python -m mkdocs build --strict
           python scripts/validate_rendered_pages.py --strict
+
+  native-ros:
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact SHA
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Native ROS 2 Jazzy smoke test (synthetic data)
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          base='ros@sha256:5147d3ae250ce754afd399f6bfec15b33dd4e473ca357e30432a3182031bfad6'
+          docker pull "$base"
+          docker image inspect --format '{{json .RepoDigests}}' "$base"
+          printf 'FROM %s\nRUN apt-get update && apt-get install -y --no-install-recommends ros-jazzy-example-interfaces ros-jazzy-tf2-ros-py && rm -rf /var/lib/apt/lists/*\n' "$base" | docker build -t lib-ros-ci -
+          docker run --rm --network none lib-ros-ci dpkg-query -W 'ros-jazzy-*'
+          docker run --rm --network none \
+            -v "$PWD:/workspace:ro" \
+            -e PYTHONPATH=/workspace/src \
+            -e ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST \
+            lib-ros-ci bash -c 'source /opt/ros/jazzy/setup.bash && python3 /workspace/tests/native_ros_smoke.py && python3 /workspace/tests/native_ros_extended.py'

@@ -1,20 +1,21 @@
 # Strategia testów
 
-Weryfikację przeprowadzać etapami od syntetycznych fixture do rzeczywistego środowiska; wynik szablonu nie jest dowodem obsługi urządzeń.
+CI buduje wheel, instaluje go, uruchamia testy unittest oraz przykład mock. Testy obejmują discovery, odczyt, timeout, QoS, ograniczone kolejki, zamykanie klienta i odrzucanie zagnieżdżonego spin/read.
 
-1. Mock grafu, typów topic i wyników discovery.
-2. QoS compatibility, timeout i rozłączenia w trakcie subskrypcji.
-3. Timestampy ROS oraz skoki /clock, opóźnienia.
-4. Transformacja TF2 z testem frame_id i quaternionów.
-5. E2E w odizolowanym kontenerze ROS2, bez rzeczywistego robota i bez sterowania aktuatorami.
+Osobny job uruchamia test rzeczywistej komunikacji ROS 2 Jazzy w oficjalnym kontenerze bez sieci zewnętrznej i bez urządzeń. Test wykorzystuje syntetyczny publisher String, sprawdza graf DDS, odczyt, subskrypcję, QoS sensor_data, timeout i zamknięcie z callbacku. Log zawiera SHA i digest obrazu. Wynik należy odczytać z Actions dla konkretnego SHA, nie z samej obecności testu.
 
-Planowany raport powinien zawierać finalny SHA, polecenie testowe, host/runtime, parametry i jednostki, źródło danych, `PASS/FAIL/NOT_RUN`, log ograniczony do metadanych oraz ewentualną niepewność pomiarową. Testy sprzętowe tylko po preflight i z jawnie wskazanym źródłem; nie używać stałych runnerów dla niezaufanego kodu.
-
-Kontrole obecnego szkieletu:
+Lokalne testy offline:
 
 ```bash
-python scripts/validate_repository.py --phase scaffold
-python scripts/validate_documentation.py
-python scripts/validate_pages.py
+python -m pip install .
 python -m unittest discover -s tests -v
+python examples/mock_read.py
 ```
+
+Testy TF2, czasu i operacji dwukierunkowych są zaimplementowane. Natywne testy konsumentów i sprzętu pozostają NOT_RUN. Test kontenerowy nie stanowi walidacji sprzętowej.
+
+Etap 2 dodaje testy mock publikacji, usług, akcji, TF2, zegarów, liczników i blokady operacji wychodzących. Natywny test rozszerzony używa wyłącznie String, AddTwoInts, Fibonacci i statycznej transformacji; bez aktuatorów. Obraz CI doinstalowuje pakiety example_interfaces i tf2_ros_py przed uruchomieniem offline. Brak testu synchronizacji fizycznych zegarów, anulowania akcji i walidacji sprzętowej.
+
+## Reprodukowalność
+
+Bazowy obraz ROS 2 Jazzy jest przypięty do digestu `sha256:5147d3ae250ce754afd399f6bfec15b33dd4e473ca357e30432a3182031bfad6`, odczytanego z [udanego joba natywnego](https://github.com/MatPomGit/lib-ros/actions/runs/46153876157/job/141006145055). Pakiety APT są nadal pobierane z bieżącego repozytorium, a runner i zależności narzędzi budowania nie są w pełni zamrożone. Przypięcie obrazu ogranicza zmienność, lecz nie gwarantuje identycznego artefaktu bit po bicie. CI rejestruje wersje zainstalowanych pakietów ROS i hash wheel. Testy regresyjne mock obejmują także rotację kolejek oraz odrzucanie spóźnionych wyników handlerów.
