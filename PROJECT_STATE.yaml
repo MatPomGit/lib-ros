@@ -11,8 +11,10 @@ device_validation_status: not_applicable
 pages_status: not_configured
 release_status: not_released
 source_version: 0.2.0
-next_action: validate_consumer_integrations_and_release_gates
+next_action: verify_release_gates_and_preserve_monitor_consumer_regression
 blockers:
   - choose_license_before_distribution
   - real_environment_e2e_not_run
-  - consumer_acceptance_final_sha_pending
+  - new_sha_ci_pending
+  - dependency_license_audit_pending
+  - publisher_approval_pending

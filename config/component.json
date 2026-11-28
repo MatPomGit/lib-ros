@@ -21,7 +21,11 @@
     "rosidl_runtime_py (native backend)",
     "tf2_ros (optional native transforms)"
   ],
-  "consumers": [],
+  "consumers": [
+    "MatPomGit/app-ros-monitor",
+    "MatPomGit/robo-vision",
+    "MatPomGit/alf-vis"
+  ],
   "supported_platforms": [],
   "compatibility": [],
   "repository_url": "https://github.com/MatPomGit/lib-ros",
