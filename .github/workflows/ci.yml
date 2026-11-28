@@ -82,10 +82,11 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
-          docker pull ros:jazzy-ros-base
-          image="$(docker image inspect --format '{{.Id}}' ros:jazzy-ros-base)"
-          docker image inspect --format '{{json .RepoDigests}}' "$image"
-          printf 'FROM %s\nRUN apt-get update && apt-get install -y --no-install-recommends ros-jazzy-example-interfaces ros-jazzy-tf2-ros-py && rm -rf /var/lib/apt/lists/*\n' ros:jazzy-ros-base | docker build -t lib-ros-ci -
+          base='ros@sha256:5147d3ae250ce754afd399f6bfec15b33dd4e473ca357e30432a3182031bfad6'
+          docker pull "$base"
+          docker image inspect --format '{{json .RepoDigests}}' "$base"
+          printf 'FROM %s\nRUN apt-get update && apt-get install -y --no-install-recommends ros-jazzy-example-interfaces ros-jazzy-tf2-ros-py && rm -rf /var/lib/apt/lists/*\n' "$base" | docker build -t lib-ros-ci -
+          docker run --rm --network none lib-ros-ci dpkg-query -W 'ros-jazzy-*'
           docker run --rm --network none \
             -v "$PWD:/workspace:ro" \
             -e PYTHONPATH=/workspace/src \

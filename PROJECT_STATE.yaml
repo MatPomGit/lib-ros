@@ -15,4 +15,4 @@ next_action: validate_consumer_integrations_and_release_gates
 blockers:
   - choose_license_before_distribution
   - real_environment_e2e_not_run
-  - consumer_integration_not_run
+  - consumer_acceptance_final_sha_pending
